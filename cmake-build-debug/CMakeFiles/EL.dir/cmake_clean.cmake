@@ -1,5 +1,7 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/EL.dir/main.cpp.obj"
+  "CMakeFiles/EL.dir/src/main.cpp.obj"
+  "CMakeFiles/EL.dir/src/Service/Service.cpp.obj"
+  "CMakeFiles/EL.dir/utils/utils.cpp.obj"
   "EL.pdb"
   "EL.exe"
   "EL.exe.manifest"

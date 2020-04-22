@@ -56,33 +56,63 @@ include CMakeFiles/EL.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/EL.dir/flags.make
 
-CMakeFiles/EL.dir/main.cpp.obj: CMakeFiles/EL.dir/flags.make
-CMakeFiles/EL.dir/main.cpp.obj: ../main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\Administrator\Desktop\EL\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/EL.dir/main.cpp.obj"
-	D:\MinGW64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\EL.dir\main.cpp.obj -c C:\Users\Administrator\Desktop\EL\main.cpp
+CMakeFiles/EL.dir/src/main.cpp.obj: CMakeFiles/EL.dir/flags.make
+CMakeFiles/EL.dir/src/main.cpp.obj: ../src/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\Administrator\Desktop\EL\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/EL.dir/src/main.cpp.obj"
+	D:\MinGW64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\EL.dir\src\main.cpp.obj -c C:\Users\Administrator\Desktop\EL\src\main.cpp
 
-CMakeFiles/EL.dir/main.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/EL.dir/main.cpp.i"
-	D:\MinGW64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Administrator\Desktop\EL\main.cpp > CMakeFiles\EL.dir\main.cpp.i
+CMakeFiles/EL.dir/src/main.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/EL.dir/src/main.cpp.i"
+	D:\MinGW64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Administrator\Desktop\EL\src\main.cpp > CMakeFiles\EL.dir\src\main.cpp.i
 
-CMakeFiles/EL.dir/main.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/EL.dir/main.cpp.s"
-	D:\MinGW64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\Administrator\Desktop\EL\main.cpp -o CMakeFiles\EL.dir\main.cpp.s
+CMakeFiles/EL.dir/src/main.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/EL.dir/src/main.cpp.s"
+	D:\MinGW64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\Administrator\Desktop\EL\src\main.cpp -o CMakeFiles\EL.dir\src\main.cpp.s
+
+CMakeFiles/EL.dir/src/Service/Service.cpp.obj: CMakeFiles/EL.dir/flags.make
+CMakeFiles/EL.dir/src/Service/Service.cpp.obj: ../src/Service/Service.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\Administrator\Desktop\EL\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/EL.dir/src/Service/Service.cpp.obj"
+	D:\MinGW64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\EL.dir\src\Service\Service.cpp.obj -c C:\Users\Administrator\Desktop\EL\src\Service\Service.cpp
+
+CMakeFiles/EL.dir/src/Service/Service.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/EL.dir/src/Service/Service.cpp.i"
+	D:\MinGW64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Administrator\Desktop\EL\src\Service\Service.cpp > CMakeFiles\EL.dir\src\Service\Service.cpp.i
+
+CMakeFiles/EL.dir/src/Service/Service.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/EL.dir/src/Service/Service.cpp.s"
+	D:\MinGW64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\Administrator\Desktop\EL\src\Service\Service.cpp -o CMakeFiles\EL.dir\src\Service\Service.cpp.s
+
+CMakeFiles/EL.dir/utils/utils.cpp.obj: CMakeFiles/EL.dir/flags.make
+CMakeFiles/EL.dir/utils/utils.cpp.obj: ../utils/utils.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\Administrator\Desktop\EL\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/EL.dir/utils/utils.cpp.obj"
+	D:\MinGW64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\EL.dir\utils\utils.cpp.obj -c C:\Users\Administrator\Desktop\EL\utils\utils.cpp
+
+CMakeFiles/EL.dir/utils/utils.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/EL.dir/utils/utils.cpp.i"
+	D:\MinGW64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Administrator\Desktop\EL\utils\utils.cpp > CMakeFiles\EL.dir\utils\utils.cpp.i
+
+CMakeFiles/EL.dir/utils/utils.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/EL.dir/utils/utils.cpp.s"
+	D:\MinGW64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\Administrator\Desktop\EL\utils\utils.cpp -o CMakeFiles\EL.dir\utils\utils.cpp.s
 
 # Object files for target EL
 EL_OBJECTS = \
-"CMakeFiles/EL.dir/main.cpp.obj"
+"CMakeFiles/EL.dir/src/main.cpp.obj" \
+"CMakeFiles/EL.dir/src/Service/Service.cpp.obj" \
+"CMakeFiles/EL.dir/utils/utils.cpp.obj"
 
 # External object files for target EL
 EL_EXTERNAL_OBJECTS =
 
-EL.exe: CMakeFiles/EL.dir/main.cpp.obj
+EL.exe: CMakeFiles/EL.dir/src/main.cpp.obj
+EL.exe: CMakeFiles/EL.dir/src/Service/Service.cpp.obj
+EL.exe: CMakeFiles/EL.dir/utils/utils.cpp.obj
 EL.exe: CMakeFiles/EL.dir/build.make
 EL.exe: D:/MinGW64/x86_64-w64-mingw32/lib/libws2_32.a
 EL.exe: CMakeFiles/EL.dir/linklibs.rsp
 EL.exe: CMakeFiles/EL.dir/objects1.rsp
 EL.exe: CMakeFiles/EL.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Users\Administrator\Desktop\EL\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable EL.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Users\Administrator\Desktop\EL\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable EL.exe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\EL.dir\link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

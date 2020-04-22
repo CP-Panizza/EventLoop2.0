@@ -1,11 +1,11 @@
+
+
+#ifndef TIME_EVENT_HPP
+#define TIME_EVENT_HPP
 #include <functional>
 #include <sys/time.h>
 #include <list>
 #include <vector>
-
-#ifndef TIME_EVENT_HPP
-#define TIME_EVENT_HPP
-
 #ifndef pvoid
 #define pvoid void *
 #endif

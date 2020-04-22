@@ -6,15 +6,15 @@
 
 #IncludeRegexTransform: 
 
-C:/Users/Administrator/Desktop/EL/EventLoop.hpp
-socket_header.h
-C:/Users/Administrator/Desktop/EL/socket_header.h
+C:/Users/Administrator/Desktop/EL/deps/EL/EventLoop.hpp
+../socket/socket_header.h
+C:/Users/Administrator/Desktop/EL/deps/socket/socket_header.h
 functional
 -
 TimeEvent.hpp
-C:/Users/Administrator/Desktop/EL/TimeEvent.hpp
+C:/Users/Administrator/Desktop/EL/deps/EL/TimeEvent.hpp
 
-C:/Users/Administrator/Desktop/EL/TimeEvent.hpp
+C:/Users/Administrator/Desktop/EL/deps/EL/TimeEvent.hpp
 functional
 -
 sys/time.h
@@ -24,21 +24,7 @@ list
 vector
 -
 
-C:/Users/Administrator/Desktop/EL/main.cpp
-iostream
--
-string.h
--
-unistd.h
--
-fcntl.h
--
-EventLoop.hpp
-C:/Users/Administrator/Desktop/EL/EventLoop.hpp
-socket_header.h
-C:/Users/Administrator/Desktop/EL/socket_header.h
-
-C:/Users/Administrator/Desktop/EL/socket_header.h
+C:/Users/Administrator/Desktop/EL/deps/socket/socket_header.h
 winsock2.h
 -
 ws2tcpip.h
@@ -49,4 +35,36 @@ sys/socket.h
 -
 arpa/inet.h
 -
+
+C:/Users/Administrator/Desktop/EL/src/main.cpp
+iostream
+-
+string.h
+-
+unistd.h
+-
+fcntl.h
+-
+../deps/EL/EventLoop.hpp
+C:/Users/Administrator/Desktop/EL/deps/EL/EventLoop.hpp
+../deps/socket/socket_header.h
+C:/Users/Administrator/Desktop/EL/deps/socket/socket_header.h
+../utils/utils.h
+C:/Users/Administrator/Desktop/EL/utils/utils.h
+
+C:/Users/Administrator/Desktop/EL/utils/utils.h
+string
+-
+vector
+-
+fstream
+-
+sstream
+-
+map
+-
+ctime
+-
+../deps/socket/socket_header.h
+C:/Users/Administrator/Desktop/EL/deps/socket/socket_header.h
 

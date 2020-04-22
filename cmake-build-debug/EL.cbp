@@ -80,13 +80,25 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="C:/Users/Administrator/Desktop/EL/EventLoop.hpp">
+		<Unit filename="C:/Users/Administrator/Desktop/EL/deps/EL/EventLoop.hpp">
 			<Option target="EL"/>
 		</Unit>
-		<Unit filename="C:/Users/Administrator/Desktop/EL/TimeEvent.hpp">
+		<Unit filename="C:/Users/Administrator/Desktop/EL/deps/EL/TimeEvent.hpp">
 			<Option target="EL"/>
 		</Unit>
-		<Unit filename="C:/Users/Administrator/Desktop/EL/main.cpp">
+		<Unit filename="C:/Users/Administrator/Desktop/EL/src/Service/Service.cpp">
+			<Option target="EL"/>
+		</Unit>
+		<Unit filename="C:/Users/Administrator/Desktop/EL/src/Service/Service.h">
+			<Option target="EL"/>
+		</Unit>
+		<Unit filename="C:/Users/Administrator/Desktop/EL/src/main.cpp">
+			<Option target="EL"/>
+		</Unit>
+		<Unit filename="C:/Users/Administrator/Desktop/EL/utils/utils.cpp">
+			<Option target="EL"/>
+		</Unit>
+		<Unit filename="C:/Users/Administrator/Desktop/EL/utils/utils.h">
 			<Option target="EL"/>
 		</Unit>
 		<Unit filename="C:/Users/Administrator/Desktop/EL/CMakeLists.txt">

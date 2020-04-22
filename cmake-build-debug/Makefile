@@ -122,32 +122,86 @@ EL/fast:
 	$(MAKE) -f CMakeFiles\EL.dir\build.make CMakeFiles/EL.dir/build
 .PHONY : EL/fast
 
-main.obj: main.cpp.obj
+src/Service/Service.obj: src/Service/Service.cpp.obj
 
-.PHONY : main.obj
+.PHONY : src/Service/Service.obj
 
 # target to build an object file
-main.cpp.obj:
-	$(MAKE) -f CMakeFiles\EL.dir\build.make CMakeFiles/EL.dir/main.cpp.obj
-.PHONY : main.cpp.obj
+src/Service/Service.cpp.obj:
+	$(MAKE) -f CMakeFiles\EL.dir\build.make CMakeFiles/EL.dir/src/Service/Service.cpp.obj
+.PHONY : src/Service/Service.cpp.obj
 
-main.i: main.cpp.i
+src/Service/Service.i: src/Service/Service.cpp.i
 
-.PHONY : main.i
+.PHONY : src/Service/Service.i
 
 # target to preprocess a source file
-main.cpp.i:
-	$(MAKE) -f CMakeFiles\EL.dir\build.make CMakeFiles/EL.dir/main.cpp.i
-.PHONY : main.cpp.i
+src/Service/Service.cpp.i:
+	$(MAKE) -f CMakeFiles\EL.dir\build.make CMakeFiles/EL.dir/src/Service/Service.cpp.i
+.PHONY : src/Service/Service.cpp.i
 
-main.s: main.cpp.s
+src/Service/Service.s: src/Service/Service.cpp.s
 
-.PHONY : main.s
+.PHONY : src/Service/Service.s
 
 # target to generate assembly for a file
-main.cpp.s:
-	$(MAKE) -f CMakeFiles\EL.dir\build.make CMakeFiles/EL.dir/main.cpp.s
-.PHONY : main.cpp.s
+src/Service/Service.cpp.s:
+	$(MAKE) -f CMakeFiles\EL.dir\build.make CMakeFiles/EL.dir/src/Service/Service.cpp.s
+.PHONY : src/Service/Service.cpp.s
+
+src/main.obj: src/main.cpp.obj
+
+.PHONY : src/main.obj
+
+# target to build an object file
+src/main.cpp.obj:
+	$(MAKE) -f CMakeFiles\EL.dir\build.make CMakeFiles/EL.dir/src/main.cpp.obj
+.PHONY : src/main.cpp.obj
+
+src/main.i: src/main.cpp.i
+
+.PHONY : src/main.i
+
+# target to preprocess a source file
+src/main.cpp.i:
+	$(MAKE) -f CMakeFiles\EL.dir\build.make CMakeFiles/EL.dir/src/main.cpp.i
+.PHONY : src/main.cpp.i
+
+src/main.s: src/main.cpp.s
+
+.PHONY : src/main.s
+
+# target to generate assembly for a file
+src/main.cpp.s:
+	$(MAKE) -f CMakeFiles\EL.dir\build.make CMakeFiles/EL.dir/src/main.cpp.s
+.PHONY : src/main.cpp.s
+
+utils/utils.obj: utils/utils.cpp.obj
+
+.PHONY : utils/utils.obj
+
+# target to build an object file
+utils/utils.cpp.obj:
+	$(MAKE) -f CMakeFiles\EL.dir\build.make CMakeFiles/EL.dir/utils/utils.cpp.obj
+.PHONY : utils/utils.cpp.obj
+
+utils/utils.i: utils/utils.cpp.i
+
+.PHONY : utils/utils.i
+
+# target to preprocess a source file
+utils/utils.cpp.i:
+	$(MAKE) -f CMakeFiles\EL.dir\build.make CMakeFiles/EL.dir/utils/utils.cpp.i
+.PHONY : utils/utils.cpp.i
+
+utils/utils.s: utils/utils.cpp.s
+
+.PHONY : utils/utils.s
+
+# target to generate assembly for a file
+utils/utils.cpp.s:
+	$(MAKE) -f CMakeFiles\EL.dir\build.make CMakeFiles/EL.dir/utils/utils.cpp.s
+.PHONY : utils/utils.cpp.s
 
 # Help Target
 help:
@@ -158,9 +212,15 @@ help:
 	@echo ... EL
 	@echo ... edit_cache
 	@echo ... rebuild_cache
-	@echo ... main.obj
-	@echo ... main.i
-	@echo ... main.s
+	@echo ... src/Service/Service.obj
+	@echo ... src/Service/Service.i
+	@echo ... src/Service/Service.s
+	@echo ... src/main.obj
+	@echo ... src/main.i
+	@echo ... src/main.s
+	@echo ... utils/utils.obj
+	@echo ... utils/utils.i
+	@echo ... utils/utils.s
 .PHONY : help
 
 

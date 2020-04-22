@@ -6,7 +6,10 @@ IF (CMAKE_SYSTEM_NAME MATCHES "Windows")
     link_libraries("D:/MinGW64/x86_64-w64-mingw32/lib/libws2_32.a")
 ENDIF ()
 add_executable(EL
-        main.cpp
-        EventLoop.hpp
-        TimeEvent.hpp
-        )
+        src/main.cpp
+        deps/EL/EventLoop.hpp
+        deps/EL/TimeEvent.hpp
+        src/Service/Service.cpp
+        src/Service/Service.h
+        utils/utils.cpp
+        utils/utils.h)

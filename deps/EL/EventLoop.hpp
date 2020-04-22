@@ -1,7 +1,7 @@
 #ifndef EVENT_LOOP_HPP
 #define EVENT_LOOP_HPP
 
-#include "socket_header.h"
+#include "../socket/socket_header.h"
 #include <functional>
 #include "TimeEvent.hpp"
 
@@ -58,8 +58,17 @@ public:
     char buff[4096];
     int len;
 #ifndef _WIN64
-    void Reset(){
+    void RemoveAndClose(){
         close(fd);
+        epoll_ctl(src_fd->elfd, EPOLL_CTL_DEL, fd, nullptr);
+        fd = -1;
+        statu = EventStatu::FREE;
+        callBack = nullptr;
+        memset(buff, 0, 4096);
+        len = 0;
+    }
+
+     void RemoveNotClose(){
         epoll_ctl(src_fd->elfd, EPOLL_CTL_DEL, fd, nullptr);
         fd = -1;
         statu = EventStatu::FREE;
@@ -69,8 +78,23 @@ public:
     }
 #else
 
-    void Reset(){
+//关闭fd，从监听列表删除
+    void RemoveAndClose(){
         closesocket(fd);
+        if(type == EventType::WRITE){
+            FD_CLR(fd, &this->src_fd->write_fd);
+        }
+        if(type == EventType::READ){
+            FD_CLR(fd, &this->src_fd->read_fd);
+        }
+        fd = -1;
+        statu = EventStatu::FREE;
+        callBack = nullptr;
+        memset(buff, 0, 4096);
+        len = 0;
+    }
+
+    void RemoveNotClose(){
         if(type == EventType::WRITE){
             FD_CLR(fd, &this->src_fd->write_fd);
         }
@@ -108,8 +132,18 @@ public:
     FireEvent *fireEvents;
     ApiData *apiData;
     TimeEventManeger *tem;
+    bool running;
     EventLoop(){
         max_fd = -1;
+    }
+
+    Event *GetEventByFd(int fd){
+        for (int i = 0; i < MAX_COUNT; ++i) {
+            if((&events[i])->fd == fd){
+                return &events[i];
+            }
+        }
+        return nullptr;
     }
 
     void InitApiData(){
@@ -169,7 +203,6 @@ public:
         return retval;
     }
 
-
 #else
 
     void CreateEvent(int fd, EventType type, CallBack callBack){
@@ -217,20 +250,42 @@ public:
     }
 
 #endif
-
     void Run(){
-        timeval t{0, 0};
-        while(1){
-            int n = this->ApiPoll(&t);
-            for (int i = 0; i < n; ++i) {
-                this->events[this->fireEvents[i].fd].Call();
-            }
-
-            this->tem->ProcTimeEvent();
+        running = true;
+        while (running) {
+            Proc();
         }
     }
 
+    void Proc(){
+        struct timeval tv;
+        long now_sec, now_ms;
+        TimeEvent *te = this->tem->GetNearestEvent();
+        if(te){
+            GetTime(&now_sec, &now_ms);
+            tv.tv_sec = te->when_sec - now_sec;
+            if(te->when_ms < now_ms){
+                tv.tv_usec = (te->when_ms + 1000 - now_ms)*1000;
+                tv.tv_sec--;
+            } else {
+                tv.tv_usec = (te->when_ms - now_ms)*1000;
+            }
+            if(tv.tv_sec < 0) tv.tv_sec = 0;
+            if(tv.tv_usec < 0) tv.tv_usec = 0;
+        } else {
+            tv.tv_sec = 0;
+            tv.tv_usec = 0;
+        }
 
+        //处理网络i/o事件
+        int nfd = ApiPoll(&tv);
+        int i;
+        for (i = 0; i < nfd; ++i) {
+            this->events[this->fireEvents[i].fd].Call();
+        }
+        //处理时间事件
+        this->tem->ProcTimeEvent();
+    }
 
 };
 
