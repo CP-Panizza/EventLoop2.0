@@ -17,6 +17,22 @@
 
 #ifdef _WIN64
 
+//检测非阻塞socket是否关闭
+bool IsSocketClosed(SOCKET clientSocket) {
+    bool ret = false;
+    HANDLE closeEvent = WSACreateEvent();
+    WSAEventSelect(clientSocket, closeEvent, FD_CLOSE);
+    DWORD dwRet = WaitForSingleObject(closeEvent, 0);
+    if (dwRet == WSA_WAIT_EVENT_0)
+        ret = true;
+    else if (dwRet == WSA_WAIT_TIMEOUT)
+        ret = false;
+
+    WSACloseEvent(closeEvent);
+    return ret;
+}
+
+
 int setnonblocking(SOCKET s) {
     unsigned long ul = 1;
     int ret = ioctlsocket(s, FIONBIO, &ul);//设置成非阻塞模式。
@@ -28,6 +44,18 @@ int setnonblocking(SOCKET s) {
 }
 
 #else
+
+bool IsSocketClosed(int clientSocket)
+{
+    char buff[32];
+    int recvBytes = recv(clientSocket, buff, sizeof(buff), MSG_PEEK);
+    int sockErr = errno;
+    if( recvBytes > 0) //Get data
+    return false;
+    if((recvBytes == -1) && (sockErr == EWOULDBLOCK) ) //No receive data
+    return false;
+    return true;
+}
 
 int setnonblocking(int fd) {
     int old_option = fcntl(fd, F_GETFL);
@@ -121,7 +149,7 @@ std::map<std::string, std::string> getConf(std::string file) {
     std::string data = read_file(file);
     auto v = split(data, "\n");
     for (auto x : v) {
-        if(!contain(x, "#")){
+        if (!contain(x, "#")) {
             auto str = replace_all(x, "\n", "");
             trim_space(str);
             auto k_v = split(str, "=");
@@ -148,10 +176,10 @@ char *to4ByteChar(unsigned int n) {
     return buff;
 }
 
-unsigned int byteCharToInt(const char *data){
-    return (0xFFFFFF | (data[0] << 24)) & (0xFF00FFFF | (data[1] << 16)) & (0xFFFF00FF | (data[2] << 8)) & (0xFFFFFF00 | data[3]);
+unsigned int byteCharToInt(const char *data) {
+    return (0xFFFFFF | (data[0] << 24)) & (0xFF00FFFF | (data[1] << 16)) & (0xFFFF00FF | (data[2] << 8)) &
+           (0xFFFFFF00 | data[3]);
 }
-
 
 
 std::string GetRemoTeIp(SOCKET fd) {
@@ -166,7 +194,6 @@ std::string GetRemoTeIp(SOCKET fd) {
            ntohs(peerAddr.sin_port));
     return std::string(inet_ntoa(peerAddr.sin_addr));
 }
-
 
 
 #ifdef _WIN64

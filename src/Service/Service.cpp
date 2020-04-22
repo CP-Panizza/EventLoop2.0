@@ -97,7 +97,7 @@ void Service::ConfigAndRun(Config *_config) {
                 std::bind(&Service::proceHeartCheck, this, std::placeholders::_1),
                 nullptr,
                 TimeEvemtType::CERCLE,
-                {},
+                {this->el},
                 this->config->heart_check_time * 1000
         );
     } else if (this->config->node_type == NodeType::Slave) {
@@ -110,12 +110,18 @@ void Service::ConfigAndRun(Config *_config) {
 
     this->el->CreateEvent(socket_fd, EventType::READ, std::bind(&Service::AcceptTcp, this, std::placeholders::_1));
     this->el->CreateEvent(http_fd, EventType::READ, std::bind(&Service::AcceptHttp, this, std::placeholders::_1));
+
+    /**
+     * 事件循环入口
+     */
     this->el->Run();
 }
 
 
 void Service::slaveRun() {
+
     connect_to_master();
+    this->el->CreateEvent(master_fd, EventType::READ, std::bind(&Service::handleMaster, this, std::placeholders::_1));
     int len;
     char *reqData = this->initSlaveRequestData(&len);
     char temp[len];
@@ -129,7 +135,7 @@ void Service::slaveRun() {
         return;
     }
 
-    this->el->CreateEvent(master_fd, EventType::READ, std::bind(&Service::handleMaster, this, std::placeholders::_1));
+
 }
 
 
@@ -178,6 +184,7 @@ char *Service::initSlaveRequestData(int *len) {
  *每一次心跳检测远端服务提供者时，把当前节点的所有slave节点信息发送过去
  */
 void Service::proceHeartCheck(TimeEvent *event) {
+    EventLoop *el = (EventLoop *)(event->data[0]);
     std::cout << "start heart check" << std::endl;
     std::string check_data = GetAllSlaveInfo();
     char recvline[100];
@@ -201,7 +208,16 @@ void Service::proceHeartCheck(TimeEvent *event) {
             memset(recvline, 0, strlen(recvline));
         }
 
+        rapidjson::StringBuffer s;
+        rapidjson::Writer<rapidjson::StringBuffer> w(s);
+
+        w.StartObject();
+        w.Key("Op");
+        w.String("Del");
+        w.Key("ServiceInfo");
+        w.StartArray();
         for (auto i : err_client) {
+            w.String(i.ip.c_str());
             Event *e = this->el->GetEventByFd(i.fd);
             if (e) {
                 e->RemoveAndClose();
@@ -212,6 +228,28 @@ void Service::proceHeartCheck(TimeEvent *event) {
             service_client.remove_if([&](ServiceClientInfo n) {
                 return n.fd == i.fd;
             });
+        }
+        w.EndArray();
+        w.EndObject();
+
+        if(!err_client.empty()){
+            auto data_size = 4 + s.GetLength();
+            auto *row_data_len = new int;
+            *row_data_len = data_size;
+            auto *row_data = new char[data_size];
+            auto _head = to4ByteChar(static_cast<unsigned int>(s.GetLength()));
+            memcpy(row_data, _head, 4);
+            memcpy(row_data + 4, s.GetString(), data_size - 4);
+            delete[] _head;
+
+
+            el->tem->CreateTimeEvent(
+                    std::bind(&Service::BroadCastToAllSlave, this, std::placeholders::_1),
+                    nullptr,
+                    TimeEvemtType::ONCE,
+                    {row_data, row_data_len},
+                    5000
+            );
         }
     }
 }
@@ -399,7 +437,8 @@ void Service::OnSlaveConnect(Event *e, rapidjson::Document *doc) {
     strcpy(e->buff, s.GetString());
     e->len = s.GetLength();
 
-    if (Service::SyncSendData(e->fd, e->buff, e->len)) {
+    char buff[10]; int l;
+    if (Service::SyncSendData(e->fd, e->buff, e->len) && Service::SyncRecvData(e->fd, buff, 10 ,&l)) {
         collect_slave(e->fd, GetRemoTeIp(e->fd), std::string((*doc)["NodeName"].GetString())); //把slave放入列表
         e->RemoveNotClose();
     } else {
@@ -472,7 +511,7 @@ void Service::handleMaster(Event *ev) {
     if (Service::SyncRecvData(ev->fd, buff, MAXLINE, &len)) {
         if (len < 4) {
             std::cout << "master send data to slave err" << std::endl;
-            exit(-1);;
+            exit(-1);
         }
         int content_len = 0;
         if (len > 4) {
@@ -488,7 +527,8 @@ void Service::handleMaster(Event *ev) {
         rapidjson::Document *doc = new rapidjson::Document;
         if (doc->Parse(p).HasParseError()) {
             std::cout << "[ERROR]>> slave parse master send data err" << std::endl;
-            exit(-1);
+            SyncSendData(master_fd, "OK", 2);
+            return;
         } else {
             if(doc->HasMember("Op")
             && std::string((*doc)["Op"].GetString()) == "Add"
@@ -524,12 +564,19 @@ void Service::handleMaster(Event *ev) {
                     int64_t connect_time = s["ConnectTime"].GetInt64();
                     collect_slave(ip, name, connect_time);
                 }
-            } else if(doc->HasMember("Op") && std::string((*doc)["Op"].GetString()) == "Del"){
 
+                SyncSendData(master_fd, "OK", 2);
+            } else if(doc->HasMember("Op")
+            && std::string((*doc)["Op"].GetString()) == "Del"
+            && doc->HasMember("ServiceInfo")){
+
+                SyncSendData(master_fd, "OK", 2);
             }
         }
     } else {
         std::cout << "master send data to slave err" << std::endl;
+        //选举master
+        //重启
         exit(-1);
     }
 }
@@ -618,10 +665,11 @@ void Service::collect_slave(std::string remoteIp, std::string name, int64_t conn
 void Service::BroadCastToAllSlave(TimeEvent *te) {
     char *raw_data = (char *)(te->data[0]);
     int *len = (int *)(te->data[1]);
+    for(auto i : slavers){
+        if(!Service::SyncSendData(i.fd, raw_data, *len)){
 
-
-
-
+        }
+    }
     delete[](raw_data);
     delete(len);
 }

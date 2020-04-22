@@ -14,6 +14,9 @@
 
 int main() {
 
+    /**
+     * 读取并解析配置文件
+     */
     auto conf = getConf("EL_SERVICE.conf");
     std::string node_type, master_ip, node_name;
     node_type = conf.count("node_type") ? conf["node_type"] : "single";
@@ -22,10 +25,22 @@ int main() {
     node_name = conf.count("node_name") ? conf["node_name"] : "";
     int64_t heart_check_time = conf.count("heart_check") ? stringToNum<int64_t >(conf["heart_check"]) : DEFAULT_HEART_CHECK_TIME;
 
+
     auto server = new Service;
 
+    /**
+     * 初始化eventloop，包括io事件，定时器事件
+     */
     server->InitEL();
+
+    /**
+     * 初始化socket，tcp，http
+     */
     server->InitSockets();
+
+    /**
+     * 构造配置项，依据配置启动相应的服务
+     */
     server->ConfigAndRun(new Config(node_name, type, master_ip, heart_check_time));
     return 0;
 }
