@@ -12,66 +12,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="77a90aeb-d3e0-4fda-b70b-dd9d380bc800" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/deps/rapidjson/allocators.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deps/rapidjson/cursorstreamwrapper.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deps/rapidjson/document.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deps/rapidjson/encodedstream.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deps/rapidjson/encodings.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deps/rapidjson/error/en.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deps/rapidjson/error/error.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deps/rapidjson/filereadstream.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deps/rapidjson/filewritestream.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deps/rapidjson/fwd.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deps/rapidjson/internal/biginteger.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deps/rapidjson/internal/clzll.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deps/rapidjson/internal/diyfp.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deps/rapidjson/internal/dtoa.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deps/rapidjson/internal/ieee754.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deps/rapidjson/internal/itoa.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deps/rapidjson/internal/meta.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deps/rapidjson/internal/pow10.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deps/rapidjson/internal/regex.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deps/rapidjson/internal/stack.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deps/rapidjson/internal/strfunc.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deps/rapidjson/internal/strtod.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deps/rapidjson/internal/swap.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deps/rapidjson/istreamwrapper.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deps/rapidjson/memorybuffer.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deps/rapidjson/memorystream.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deps/rapidjson/msinttypes/inttypes.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deps/rapidjson/msinttypes/stdint.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deps/rapidjson/ostreamwrapper.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deps/rapidjson/pointer.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deps/rapidjson/prettywriter.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deps/rapidjson/rapidjson.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deps/rapidjson/reader.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deps/rapidjson/schema.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deps/rapidjson/stream.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deps/rapidjson/stringbuffer.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deps/rapidjson/writer.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Service/RWLock.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Service/Service.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Service/Service.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utils/utils.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utils/utils.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EventLoop.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/deps/EL/EventLoop.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TimeEvent.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/deps/EL/TimeEvent.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/EL.dir/CXX.includecache" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/EL.dir/CXX.includecache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/EL.dir/DependInfo.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/EL.dir/DependInfo.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/EL.dir/build.make" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/EL.dir/build.make" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/EL.dir/cmake_clean.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/EL.dir/cmake_clean.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/EL.dir/depend.internal" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/EL.dir/depend.internal" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/EL.dir/depend.make" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/EL.dir/depend.make" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/EL.dir/objects1.rsp" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/EL.dir/objects1.rsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/EL.dir/progress.make" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/EL.dir/progress.make" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Makefile2" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Makefile2" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/progress.marks" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/progress.marks" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/EL.cbp" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/EL.cbp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/socket_header.h" beforeDir="false" afterPath="$PROJECT_DIR$/deps/socket/socket_header.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Service/Service.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/Service.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Service/Service.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/Service.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -96,10 +40,11 @@
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="Makefile" value="1" />
+          <entry key="conf" value="2" />
           <entry key="cpp" value="3" />
           <entry key="functional" value="7" />
-          <entry key="h" value="20" />
-          <entry key="hpp" value="14" />
+          <entry key="h" value="24" />
+          <entry key="hpp" value="15" />
           <entry key="txt" value="4" />
         </counts>
       </usages-collector>
@@ -107,13 +52,14 @@
         <counts>
           <entry key="CMakeLists.txt" value="4" />
           <entry key="Makefile" value="1" />
-          <entry key="ObjectiveC" value="44" />
+          <entry key="ObjectiveC" value="49" />
+          <entry key="PLAIN_TEXT" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="cpp" value="1115" />
-          <entry key="h" value="148" />
+          <entry key="cpp" value="2002" />
+          <entry key="h" value="217" />
           <entry key="hpp" value="808" />
           <entry key="mm" value="7" />
           <entry key="txt" value="6" />
@@ -122,7 +68,8 @@
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="CMakeLists.txt" value="6" />
-          <entry key="ObjectiveC" value="2078" />
+          <entry key="Doxygen file" value="1" />
+          <entry key="ObjectiveC" value="3033" />
         </counts>
       </usages-collector>
     </session>
@@ -135,8 +82,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="617">
-              <caret line="25" column="21" lean-forward="true" selection-start-line="25" selection-start-column="21" selection-end-line="25" selection-end-column="21" />
+            <state relative-caret-position="477">
+              <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
               </folding>
@@ -144,11 +91,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Service/Service.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="449">
-              <caret line="537" lean-forward="true" selection-start-line="537" selection-end-line="537" />
+            <state relative-caret-position="627">
+              <caret line="507" lean-forward="true" selection-start-line="507" selection-end-line="507" />
               <folding>
                 <element signature="e#49#69#0" expanded="true" />
               </folding>
@@ -156,11 +103,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Service/Service.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="57">
-              <caret line="104" column="8" lean-forward="true" selection-start-line="104" selection-start-column="8" selection-end-line="104" selection-end-column="8" />
+            <state relative-caret-position="252">
+              <caret line="100" selection-start-line="100" selection-end-line="100" />
               <folding>
                 <element signature="e#93#137#0" expanded="true" />
               </folding>
@@ -186,8 +133,9 @@
         <option value="$PROJECT_DIR$/utils/utils.cpp" />
         <option value="$PROJECT_DIR$/utils/utils.h" />
         <option value="$PROJECT_DIR$/deps/EL/EventLoop.hpp" />
-        <option value="$PROJECT_DIR$/src/Service/Service.h" />
         <option value="$PROJECT_DIR$/src/main.cpp" />
+        <option value="$PROJECT_DIR$/cmake-build-debug/EL_SERVICE.conf" />
+        <option value="$PROJECT_DIR$/src/Service/Service.h" />
         <option value="$PROJECT_DIR$/src/Service/Service.cpp" />
       </list>
     </option>
@@ -218,6 +166,11 @@
             <path>
               <item name="EL" type="b2602c69:ProjectViewProjectNode" />
               <item name="EL" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="EL" type="b2602c69:ProjectViewProjectNode" />
+              <item name="EL" type="462c0819:PsiDirectoryNode" />
+              <item name="cmake-build-debug" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -287,12 +240,12 @@
       <workItem from="1587387052334" duration="9561000" />
       <workItem from="1587435252736" duration="2257000" />
       <workItem from="1587437677194" duration="3755000" />
-      <workItem from="1587522770835" duration="6547000" />
+      <workItem from="1587522770835" duration="15957000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="34164000" />
+    <option name="totallyTimeSpent" value="43574000" />
   </component>
   <component name="TodoView" selected-index="3">
     <todo-panel id="selected-file">
@@ -304,11 +257,11 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-9" y="25" width="1938" height="1064" extended-state="7" />
+    <frame x="-9" y="25" width="1938" height="1064" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49636364" visible="true" weight="0.21244635" />
-      <window_info id="Structure" order="1" sideWeight="0.50363636" side_tool="true" visible="true" weight="0.21244635" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4977778" visible="true" weight="0.21244635" />
+      <window_info active="true" id="Structure" order="1" sideWeight="0.50222224" side_tool="true" visible="true" weight="0.21244635" />
       <window_info id="Favorites" order="2" sideWeight="0.50222224" side_tool="true" weight="0.21244635" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
@@ -318,12 +271,12 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="CMake" order="7" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="8" visible="true" weight="0.3888889" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.3888889" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="10" />
       <window_info anchor="bottom" id="Messages" order="11" weight="0.37555555" />
       <window_info anchor="bottom" id="Database Changes" order="12" show_stripe_button="false" />
-      <window_info anchor="right" id="LuaJ" />
+      <window_info anchor="right" id="LuaJ" weight="0.3299356" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -332,6 +285,9 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.conf" />
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
@@ -470,10 +426,35 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/cmake-build-debug/EL_SERVICE.conf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="140">
+          <caret line="5" lean-forward="true" selection-start-line="5" selection-end-line="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://D:/MinGW64/x86_64-w64-mingw32/include/wingdi.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="3308" column="8" selection-start-line="3308" selection-start-column="8" selection-end-line="3308" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/deps/rapidjson/document.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="280">
+          <caret line="664" column="44" selection-start-line="664" selection-start-column="44" selection-end-line="664" selection-end-column="44" />
+          <folding>
+            <element signature="e#18892#18912#0" expanded="true" />
+            <element signature="e#84029#84041#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/deps/EL/EventLoop.hpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2089">
-          <caret line="144" column="9" lean-forward="true" selection-start-line="144" selection-start-column="9" selection-end-line="144" selection-end-column="9" />
+        <state relative-caret-position="168">
+          <caret line="138" lean-forward="true" selection-start-line="138" selection-end-line="138" />
           <folding>
             <element signature="e#47#83#0" expanded="true" />
             <element signature="e#2590#2694#0" expanded="true" />
@@ -484,30 +465,37 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="617">
-          <caret line="25" column="21" lean-forward="true" selection-start-line="25" selection-start-column="21" selection-end-line="25" selection-end-column="21" />
+        <state relative-caret-position="477">
+          <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Service/Service.cpp">
+    <entry file="file://D:/MinGW64/x86_64-w64-mingw32/include/_mingw.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="449">
-          <caret line="537" lean-forward="true" selection-start-line="537" selection-end-line="537" />
-          <folding>
-            <element signature="e#49#69#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="289">
+          <caret line="480" column="12" lean-forward="true" selection-start-line="480" selection-start-column="12" selection-end-line="480" selection-end-column="12" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Service/Service.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="57">
-          <caret line="104" column="8" lean-forward="true" selection-start-line="104" selection-start-column="8" selection-end-line="104" selection-end-column="8" />
+        <state relative-caret-position="252">
+          <caret line="100" selection-start-line="100" selection-end-line="100" />
           <folding>
             <element signature="e#93#137#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Service/Service.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="627">
+          <caret line="507" lean-forward="true" selection-start-line="507" selection-end-line="507" />
+          <folding>
+            <element signature="e#49#69#0" expanded="true" />
           </folding>
         </state>
       </provider>

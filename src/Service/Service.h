@@ -54,6 +54,13 @@ struct SlaverInfo {
     std::string name; //slave名字
     std::string ip; //slave ip
     time_t connect_time; //slave连接上master的时间
+    SlaverInfo(int fd, const std::string &name, const std::string &ip, time_t connect_time) : fd(fd), name(name),
+                                                                                              ip(ip), connect_time(
+                    connect_time) {}
+
+    SlaverInfo(const std::string &name, const std::string &ip, time_t connect_time) : name(name), ip(ip),
+                                                                                      connect_time(
+                                                                                              connect_time) {}
 };
 
 
@@ -86,7 +93,7 @@ public:
 
     void connect_to_master();
 
-    void handle(Event *ev);
+    void handleTcp(Event *ev);
 
     bool SyncSendData(int s,const char *buf,int len);
 
@@ -96,12 +103,17 @@ public:
 
     void collect_slave(int fd, std::string remoteIp, std::string name);
 
+    void collect_slave(std::string remoteIp, std::string name, int64_t connect_time);
+
     void OnServiceREG(Event *e, rapidjson::Document *doc);
 
     void OnClientPULL(Event *e, rapidjson::Document *doc);
 
     void OnSlaveConnect(Event *e, rapidjson::Document *doc);
 
+    const std::string GetAllSlaveInfo();
+
+    void BroadCastToAllSlave(TimeEvent *);
 private:
     typedef std::map<std::string, std::list<struct ServerInfo *> *> Server_map;
     RWLock lock;
@@ -113,7 +125,6 @@ private:
     int socket_fd;
     int http_fd;
     int master_fd;
-
 };
 
 extern std::atomic<bool> runnning;
