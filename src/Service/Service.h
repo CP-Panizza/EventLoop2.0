@@ -109,11 +109,15 @@ public:
 
     void OnClientPULL(Event *e, rapidjson::Document *doc);
 
-    void OnSlaveConnect(Event *e, rapidjson::Document *doc);
+    void OnSlavePULL(Event *e, rapidjson::Document *doc);
+
+    void Remove_slave(std::string name, std::string ip);
+
+    void SlavePullDataFromMaster(TimeEvent *event);
 
     const std::string GetAllSlaveInfo();
 
-    void BroadCastToAllSlave(TimeEvent *);
+    bool checkData(char *data, int data_len);
 private:
     typedef std::map<std::string, std::list<struct ServerInfo *> *> Server_map;
     RWLock lock;

@@ -48,16 +48,20 @@ Type stringToNum(const std::string &in) {
 
 
 std::string GetRemoTeIp(SOCKET fd);
-
+int socket_tcp_alive(int socket);
 
 #ifdef _WIN64
 
+bool IsSocketClosed(SOCKET clientSocket);
 SOCKET CreateSocket(uint16_t port);
 int setnonblocking(SOCKET s);
+
 #else
 
+bool IsSocketClosed(int clientSocket);
 int CreateSocket(uint16_t port);
 int setnonblocking(int fd);
+
 #endif
 
 

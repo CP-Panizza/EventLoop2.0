@@ -17,6 +17,51 @@
 
 #ifdef _WIN64
 
+/**
+ * keepalive 怎么通知我们异常断开的情况。这里采用 select 模式，实验环境为 XP 系统和 Win7 系统，几种情况返回值如下：
+    1． 正常断开
+    select 函数正常返回， recv 函数返回 0
+    2． 异常断开
+    a)程序异常退出，如 client 端重启，应用非正常关闭等
+        select 函数正常返回， recv 函数返回 SOCKET_ERROR ， WSAGetLastError () 得到的结果为 WSAECONNRESET(10054) 。
+    b)网络断开
+    结果同上： select 函数正常返回， recv 函数返回 SOCKET_ERROR ， WSAGetLastError() 得到的结果为 WSAECONNRESET(10054)
+ * @param socket
+ * @return
+ */
+
+int socket_tcp_alive(int socket) {
+    int ret = 0;
+
+    int keep_alive = 1;
+    ret = setsockopt(socket, SOL_SOCKET, SO_KEEPALIVE, (char *) &keep_alive, sizeof(keep_alive));
+
+    if (ret == SOCKET_ERROR) {
+        printf("setsockopt failed: %d \n", WSAGetLastError());
+        return -1;
+    }
+
+    struct tcp_keepalive in_keep_alive = {0};
+    unsigned long ul_in_len = sizeof(struct tcp_keepalive);
+    struct tcp_keepalive out_keep_alive = {0};
+    unsigned long ul_out_len = sizeof(struct tcp_keepalive);
+    unsigned long ul_bytes_return = 0;
+
+    in_keep_alive.onoff = 1;                    /*打开keepalive*/
+    in_keep_alive.keepaliveinterval = 5000; /*发送keepalive心跳时间间隔-单位为毫秒*/
+    in_keep_alive.keepalivetime = 1000;         /*多长时间没有报文开始发送keepalive心跳包-单位为毫秒*/
+
+    ret = WSAIoctl(socket, SIO_KEEPALIVE_VALS, (LPVOID) &in_keep_alive, ul_in_len,
+                   (LPVOID) &out_keep_alive, ul_out_len, &ul_bytes_return, NULL, NULL);
+
+    if (ret == SOCKET_ERROR) {
+        printf("WSAIoctl failed: %d \n", WSAGetLastError());
+        return -1;
+    }
+
+    return 0;
+}
+
 //检测非阻塞socket是否关闭
 bool IsSocketClosed(SOCKET clientSocket) {
     bool ret = false;
@@ -44,6 +89,23 @@ int setnonblocking(SOCKET s) {
 }
 
 #else
+
+int socket_tcp_alive(int socket) {
+    int optval;
+    socklen_t optlen = sizeof(optval);
+
+    optval = 1;
+    setsockopt(socket, SOL_SOCKET, SO_KEEPALIVE, &optval, optlen);
+
+    optval = 5;
+    setsockopt(socket, SOL_TCP, TCP_KEEPCNT, &optval, optlen);
+
+    optval = 1;
+    setsockopt(socket, SOL_TCP, TCP_KEEPIDLE, &optval, optlen);
+
+    optval = 1;
+    setsockopt(socket, SOL_TCP, TCP_KEEPINTVL, &optval, optlen);
+}
 
 bool IsSocketClosed(int clientSocket)
 {
