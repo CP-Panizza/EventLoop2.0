@@ -71,6 +71,7 @@ void Service::handleTcp(Event *ev) {
             return;
         }
         std::cout << "[Notify]>> clinet: " << ev->fd << " closed" << std::endl;
+        Service::Remove_slave(ev->fd);
         ev->RemoveAndClose();
     }
 }
@@ -123,7 +124,7 @@ void Service::slaveRun() {
             nullptr,
             TimeEvemtType::CERCLE,
             {reqData, len},
-            3000 * 10);
+            this->config->pull_data_time * 1000);
 }
 
 
@@ -303,8 +304,6 @@ void Service::OnServiceREG(Event *e, rapidjson::Document *doc) {
 
 
 void Service::OnClientPULL(Event *e, rapidjson::Document *doc) {
-    rapidjson::StringBuffer s;
-    rapidjson::Writer<rapidjson::StringBuffer> w(s);
     std::map<std::string, std::list<ServerInfo *> *> temp_map;
     auto serviceList = ((*doc)["ServiceList"]).GetArray();
     for (auto it = serviceList.Begin(); it != serviceList.End(); it++) {
@@ -316,28 +315,9 @@ void Service::OnClientPULL(Event *e, rapidjson::Document *doc) {
             temp_map[ser_name] = &tmep_list;
         }
     }
-    w.StartObject();
-    w.Key("data");
-    w.StartArray();
-    for (auto key_val : temp_map) {
-        w.StartObject();
-        w.Key(key_val.first.c_str());
-        w.StartArray();
-        for (auto &ip : *key_val.second) {
-            w.StartObject();
-            w.Key("Ip");
-            w.String(ip->ip.c_str());
-            w.Key("Proportion");
-            w.Int(ip->proportion);
-            w.EndObject();
-        }
-        w.EndArray();
-        w.EndObject();
-    }
-    w.EndArray();
-    w.EndObject();
-    strcpy(e->buff, s.GetString());
-    e->len = s.GetLength();
+    auto s = GetAllServiceInfoAndSlaveInfo();
+    strcpy(e->buff, s.c_str());
+    e->len = s.length();
     delete (doc);
     if (!Service::SyncSendData(e->fd, e->buff, e->len)) {
         e->RemoveAndClose();
@@ -346,52 +326,11 @@ void Service::OnClientPULL(Event *e, rapidjson::Document *doc) {
 
 
 void Service::OnSlavePULL(Event *e, rapidjson::Document *doc) {
-    rapidjson::StringBuffer s;
-    rapidjson::Writer<rapidjson::StringBuffer> w(s);
-
-    w.StartObject();
-    w.Key("ServiceInfo");
-    w.StartArray();
-    for (auto l : server_list_map) {
-        w.StartObject();
-        w.Key("ServerName");
-        w.String(l.first.c_str());
-        w.Key("List");
-        w.StartArray();
-        for (auto m : *l.second) {
-            w.StartObject();
-            w.Key("Ip");
-            w.String(m->ip.c_str());
-            w.Key("Proportion");
-            w.Int(m->proportion);
-            w.EndObject();
-        }
-        w.EndArray();
-        w.EndObject();
-    }
-    w.EndArray();
-
-    w.Key("SlavesInfo");
-    w.StartArray();
-    for (auto n : slavers) {
-        w.StartObject();
-        w.Key("Ip");
-        w.String(n.ip.c_str());
-        w.Key("Name");
-        w.String(n.name.c_str());
-        w.Key("ConnectTime");
-        w.Int64(n.connect_time);
-        w.EndObject();
-    }
-    w.EndArray();
-    w.EndObject();
-
-    strcpy(e->buff, s.GetString());
-    e->len = s.GetLength();
-
+    auto s = GetAllServiceInfoAndSlaveInfo();
+    strcpy(e->buff, s.c_str());
+    e->len = s.length();
     std::string node_name = std::string((*doc)["NodeName"].GetString());
     std::string ip = GetRemoTeIp(e->fd);
-
     if (Service::SyncSendData(e->fd, e->buff, e->len)) {
         collect_slave(e->fd, ip, node_name); //把slave放入列表
     } else {
@@ -579,9 +518,11 @@ void Service::AcceptHttp(Event *e) {
     e->el->CreateEvent(new_fd, EventType::READ, std::bind(&Service::handleHttp, this, std::placeholders::_1));
 }
 
+
 void Service::handleHttp(Event *ev) {
 
 }
+
 
 const std::string Service::GetAllSlaveInfo() {
     rapidjson::StringBuffer s;
@@ -648,6 +589,62 @@ void Service::Remove_slave(std::string name, std::string ip) {
 
 void Service::SlavePullDataFromMaster(TimeEvent *event) {
 
+}
+
+const std::string Service::GetAllServiceInfoAndSlaveInfo() {
+    rapidjson::StringBuffer s;
+    rapidjson::Writer<rapidjson::StringBuffer> w(s);
+    w.StartObject();
+    w.Key("ServiceInfo");
+    w.StartArray();
+    for (auto l : server_list_map) {
+        w.StartObject();
+        w.Key("ServerName");
+        w.String(l.first.c_str());
+        w.Key("List");
+        w.StartArray();
+        for (auto m : *l.second) {
+            w.StartObject();
+            w.Key("Ip");
+            w.String(m->ip.c_str());
+            w.Key("Proportion");
+            w.Int(m->proportion);
+            w.EndObject();
+        }
+        w.EndArray();
+        w.EndObject();
+    }
+    w.EndArray();
+
+    w.Key("SlavesInfo");
+    w.StartArray();
+    for (auto n : slavers) {
+        w.StartObject();
+        w.Key("Ip");
+        w.String(n.ip.c_str());
+        w.Key("Name");
+        w.String(n.name.c_str());
+        w.Key("ConnectTime");
+        w.Int64(n.connect_time);
+        w.EndObject();
+    }
+    w.EndArray();
+    w.EndObject();
+    return std::string(s.GetString());
+}
+
+
+/**
+ * 通过fd删除slavers集合中的slave
+ * @param fd
+ */
+void Service::Remove_slave(int fd) {
+    this->slavers.remove_if([&](SlaverInfo s){
+        if(s.fd == fd){
+            return true;
+        }
+        return false;
+    });
 }
 
 

@@ -25,13 +25,15 @@ enum NodeType {
 };
 
 struct Config {
-    Config(const std::string &node_name, NodeType node_type, const std::string &master_ip, int64_t heart_check_time)
-            : node_name(node_name), node_type(node_type), master_ip(master_ip), heart_check_time(heart_check_time) {}
+    Config(const std::string &node_name, NodeType node_type, const std::string &master_ip, int64_t heart_check_time,
+           int64_t pull_data_time) : node_name(node_name), node_type(node_type), master_ip(master_ip),
+                                     heart_check_time(heart_check_time), pull_data_time(pull_data_time) {}
 
     std::string node_name;
     NodeType node_type;
     std::string master_ip;
     int64_t heart_check_time; //单位s
+    int64_t pull_data_time;
 };
 
 //保存服务提供者socket_fd和远端服务ip
@@ -113,9 +115,13 @@ public:
 
     void Remove_slave(std::string name, std::string ip);
 
+    void Remove_slave(int fd);
+
     void SlavePullDataFromMaster(TimeEvent *event);
 
     const std::string GetAllSlaveInfo();
+
+    const std::string GetAllServiceInfoAndSlaveInfo();
 
     bool checkData(char *data, int data_len);
 private:

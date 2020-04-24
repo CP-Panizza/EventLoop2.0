@@ -334,7 +334,7 @@ int CreateSocket(uint16_t port) {
         exit(-1);
     }
 
-    printf("socket_fd= %d\n", new_socket);
+    printf("[INFO]>> socket_fd= %d\n", new_socket);
     return new_socket;
 }
 

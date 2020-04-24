@@ -320,6 +320,24 @@ C:/Users/Administrator/Desktop/EL/deps/EL/EventLoop.hpp
 ../../deps/rapidjson/document.h
 C:/Users/Administrator/Desktop/EL/deps/rapidjson/document.h
 
+C:/Users/Administrator/Desktop/EL/src/main.cpp
+iostream
+-
+string.h
+-
+unistd.h
+-
+fcntl.h
+-
+../deps/EL/EventLoop.hpp
+C:/Users/Administrator/Desktop/EL/deps/EL/EventLoop.hpp
+../deps/socket/socket_header.h
+C:/Users/Administrator/Desktop/EL/deps/socket/socket_header.h
+../utils/utils.h
+C:/Users/Administrator/Desktop/EL/utils/utils.h
+Service/Service.h
+C:/Users/Administrator/Desktop/EL/src/Service/Service.h
+
 C:/Users/Administrator/Desktop/EL/utils/utils.h
 string
 -
