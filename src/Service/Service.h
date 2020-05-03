@@ -120,8 +120,6 @@ public:
     //master宕机后选择连接时间最晚的服务器做下一个master
     SlaverInfo * getNextMaster();
 
-
-
     /**
      * http module
      */

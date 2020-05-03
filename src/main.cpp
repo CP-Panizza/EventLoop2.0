@@ -27,7 +27,6 @@ int main() {
     int64_t pull_data_time = conf.count("pull_data_time") ? stringToNum<int64_t>(conf["pull_data_time"]) : DEFAULT_PULL_DATA_TIME;
 
     auto server = new Service;
-
     /**
      * 初始化eventloop，包括io事件，定时器事件
      */
@@ -38,6 +37,10 @@ int main() {
      */
     server->InitSockets();
 
+    /**
+     * 初始化http接口
+     */
+    server->initHttpServer();
     /**
      * 构造配置项，依据配置启动相应的服务
      */

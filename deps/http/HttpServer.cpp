@@ -104,6 +104,7 @@ void HttpServer::processHttp(Event *ev) {
     }
 }
 
+
 void HttpServer::H(std::string method, std::string url, std::function<bool(Request, Response *)> func) {
     auto h = new struct handle(url, func);
     if (methods.count(method)) {
@@ -116,6 +117,7 @@ void HttpServer::H(std::string method, std::string url, std::function<bool(Reque
 }
 
 
+
 #ifdef _WIN64
 void HttpServer::set_static_path(std::string path) {
     if (path[0] != '\\') {
@@ -123,8 +125,6 @@ void HttpServer::set_static_path(std::string path) {
     }
     this->static_path = path;
 }
-
-
 
 #else
 void HttpServer::set_static_path(std::string path) {
