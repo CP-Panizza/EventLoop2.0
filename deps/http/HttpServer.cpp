@@ -15,7 +15,9 @@
 #endif
 
 HttpServer::HttpServer() {
-
+    char buf[100] = {0};
+    getcwd(buf, sizeof(buf));
+    this->excute_pwd = std::string(buf);
 }
 
 void HttpServer::processHttp(Event *ev) {
@@ -93,15 +95,13 @@ void HttpServer::processHttp(Event *ev) {
     }
 
     if (ok) {
-        bool done = temp_handle(request, &response);
-        if(!done){
-            ev->RemoveAndClose();
-        }
+        temp_handle(request, &response);
     } else {
         response.set_header("Content-Type", "text/html");
         response.write(404, "Not found!");
         ev->RemoveAndClose();
     }
+    ev->RemoveAndClose();
 }
 
 
@@ -117,8 +117,8 @@ void HttpServer::H(std::string method, std::string url, std::function<bool(Reque
 }
 
 
-
 #ifdef _WIN64
+
 void HttpServer::set_static_path(std::string path) {
     if (path[0] != '\\') {
         throw std::string("STATIC PATH MUST START WITH '/'");

@@ -24,7 +24,7 @@ void Response::write(int code, std::string data) {
     }
     buf += "\r\n";
     buf += data;
-    if(send(conn, buf.c_str(), strlen(buf.c_str()), 0) == -1 ){
+    if(!SyncSendData(conn, buf.c_str(), strlen(buf.c_str()))){
         std::cout << "send data err!" << std::endl;
     }
 }

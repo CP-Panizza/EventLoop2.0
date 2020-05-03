@@ -783,6 +783,15 @@ bool Service::HttpChangeServer(Request req, Response *resp) {
     }
 }
 
+bool count(std::list<ServerInfo*> src, std::string ip){
+    for(auto x : src){
+        if(x->ip == ip){
+            return true;
+        }
+    }
+    return false;
+}
+
 
 
 bool count(std::list<ServiceClientInfo> src, ServiceClientInfo target) {

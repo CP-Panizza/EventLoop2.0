@@ -147,6 +147,8 @@ private:
 
 extern std::atomic<bool> runnning;
 
+bool count(std::list<ServerInfo*> src, std::string ip);
+
 bool count(std::list<ServiceClientInfo> src, ServiceClientInfo target);
 
 bool count(std::list<SlaverInfo> src, SlaverInfo target);
