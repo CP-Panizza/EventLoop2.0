@@ -14,6 +14,7 @@
 #include <atomic>
 #include "../../deps/EL/EventLoop.hpp"
 #include "../../deps/rapidjson/document.h"
+#include "../../deps/http/HttpServer.h"
 
 #define MAXLINE 4096
 #define SERVICE_PORT 8527
@@ -56,6 +57,7 @@ struct SlaverInfo {
     std::string name; //slave名字
     std::string ip; //slave ip
     time_t connect_time; //slave连接上master的时间
+    SlaverInfo(){}
     SlaverInfo(int fd, const std::string &name, const std::string &ip, time_t connect_time) : fd(fd), name(name),
                                                                                               ip(ip), connect_time(
                     connect_time) {}
@@ -79,15 +81,9 @@ public:
 
     void AcceptTcp(Event *e);
 
-    void AcceptHttp(Event *e);
-
-    void handleHttp(Event *ev);
-
     void removeServerInfoByIp(std::string ip);
 
     void slaveRun();
-
-    void handleMaster(Event *ev);
 
     char *initSlaveRequestData(int *len);
 
@@ -96,10 +92,6 @@ public:
     void connect_to_master();
 
     void handleTcp(Event *ev);
-
-    bool SyncSendData(int s,const char *buf,int len);
-
-    bool SyncRecvData(int s, char *buf, int size_buf, int *len);
 
     void collect_server(int fd, std::string remoteIp);
 
@@ -124,6 +116,23 @@ public:
     const std::string GetAllServiceInfoAndSlaveInfo();
 
     bool checkData(char *data, int data_len);
+
+    //master宕机后选择连接时间最晚的服务器做下一个master
+    SlaverInfo * getNextMaster();
+
+
+
+    /**
+     * http module
+     */
+    void AcceptHttp(Event *e);
+    void handleHttp(Event *ev);
+    void initHttpServer();
+    bool HttpLogin(Request req, Response *resp);
+    bool HttpAddServer(Request req, Response *resp);
+    bool HttpDelServer(Request req, Response *resp);
+    bool HttpGetAllServer(Request req, Response *resp);
+    bool HttpChangeServer(Request req, Response *resp);
 private:
     typedef std::map<std::string, std::list<struct ServerInfo *> *> Server_map;
     RWLock lock;
@@ -132,6 +141,7 @@ private:
     std::list<SlaverInfo> slavers;
     Config *config;
     EventLoop *el;
+    HttpServer *http_server;
     int socket_fd;
     int http_fd;
     int master_fd;

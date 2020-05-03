@@ -339,3 +339,60 @@ int CreateSocket(uint16_t port) {
 }
 
 #endif
+
+
+bool SyncSendData(int s, const char *buf, int len) {
+    int ret = -1;
+    int Total = 0;
+    int lenSend = 0;
+    struct timeval tv{};
+    tv.tv_sec = 3;
+    tv.tv_usec = 500;
+    fd_set wset;
+    while (true) {
+        FD_ZERO(&wset);
+        FD_SET(s, &wset);
+        if (select(0, nullptr, &wset, nullptr, &tv) > 0)//3.5秒之内可以send，即socket可以写入
+        {
+            lenSend = send(s, buf + Total, len - Total, 0);
+            if (lenSend == -1) {
+                return false;
+            }
+            Total += lenSend;
+            if (Total == len) {
+                return true;
+            }
+        } else  //3.5秒之内socket还是不可以写入，认为发送失败
+        {
+            return false;
+        }
+    }
+}
+
+
+bool SyncRecvData(int s, char *buf, int size_buf, int *len) {
+    struct timeval tv{};
+    tv.tv_sec = 3;
+    tv.tv_usec = 500;
+    fd_set rset;
+    while (true) {
+        FD_ZERO(&rset);
+        FD_SET(s, &rset);
+        if (select(0, &rset, nullptr, nullptr, &tv) > 0)//3.5秒之内可以
+        {
+            int n = recv(s, buf, sizeof(size_buf), 0);
+            if (n > 0) {
+                *len = n;
+                return true;
+            } else {
+                if ((n < 0) && (errno == EAGAIN || errno == EWOULDBLOCK || errno == EINTR)) {
+                    continue;
+                }
+                return false;
+            }
+        } else  //3.5秒之内socket还是不可以写入，认为发送失败
+        {
+            return false;
+        }
+    }
+}

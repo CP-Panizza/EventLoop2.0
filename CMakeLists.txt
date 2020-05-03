@@ -12,4 +12,8 @@ add_executable(EL
         src/Service/Service.cpp
         src/Service/Service.h
         utils/utils.cpp
-        utils/utils.h)
+        utils/utils.h
+        deps/http/HttpServer.cpp
+        deps/http/Request.cpp
+        deps/http/Response.cpp
+        )

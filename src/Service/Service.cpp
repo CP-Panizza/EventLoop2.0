@@ -71,6 +71,9 @@ void Service::handleTcp(Event *ev) {
             return;
         }
         std::cout << "[Notify]>> clinet: " << ev->fd << " closed" << std::endl;
+        /**
+         * 如果是slave关闭了，就从slavers集合中删除它
+         */
         Service::Remove_slave(ev->fd);
         ev->RemoveAndClose();
     }
@@ -245,7 +248,9 @@ void Service::collect_slave(int fd, std::string remoteIp, std::string name) {
     }
 }
 
-
+/*
+ * 初始化eventloop
+ */
 void Service::InitEL() {
     el = new EventLoop;
     el->InitApiData();
@@ -274,7 +279,7 @@ void Service::OnServiceREG(Event *e, rapidjson::Document *doc) {
     /**
      * 发送返回信息，成功就注册信息，失败就放弃并关闭连接
      */
-    if (Service::SyncSendData(e->fd, e->buff, e->len)) {
+    if (SyncSendData(e->fd, e->buff, e->len)) {
         collect_server(e->fd, remoteIp); //把服务提供方描述符放入一个列表
         e->RemoveNotClose();
 
@@ -319,161 +324,25 @@ void Service::OnClientPULL(Event *e, rapidjson::Document *doc) {
     strcpy(e->buff, s.c_str());
     e->len = s.length();
     delete (doc);
-    if (!Service::SyncSendData(e->fd, e->buff, e->len)) {
+    if (!SyncSendData(e->fd, e->buff, e->len)) {
         e->RemoveAndClose();
     }
 }
 
 
 void Service::OnSlavePULL(Event *e, rapidjson::Document *doc) {
+    std::string node_name = std::string((*doc)["NodeName"].GetString());
+    std::string ip = GetRemoTeIp(e->fd);
+    collect_slave(e->fd, ip, node_name); //把slave放入列表
     auto s = GetAllServiceInfoAndSlaveInfo();
     strcpy(e->buff, s.c_str());
     e->len = s.length();
-    std::string node_name = std::string((*doc)["NodeName"].GetString());
-    std::string ip = GetRemoTeIp(e->fd);
-    if (Service::SyncSendData(e->fd, e->buff, e->len)) {
-        collect_slave(e->fd, ip, node_name); //把slave放入列表
-    } else {
+    if (!SyncSendData(e->fd, e->buff, e->len)) {
         this->Remove_slave(node_name, ip);
         e->RemoveAndClose();
     }
     delete (doc);
 }
-
-
-bool Service::SyncSendData(int s, const char *buf, int len) {
-    int ret = -1;
-    int Total = 0;
-    int lenSend = 0;
-    struct timeval tv{};
-    tv.tv_sec = 3;
-    tv.tv_usec = 500;
-    fd_set wset;
-    while (true) {
-        FD_ZERO(&wset);
-        FD_SET(s, &wset);
-        if (select(0, nullptr, &wset, nullptr, &tv) > 0)//3.5秒之内可以send，即socket可以写入
-        {
-            lenSend = send(s, buf + Total, len - Total, 0);
-            if (lenSend == -1) {
-                return false;
-            }
-            Total += lenSend;
-            if (Total == len) {
-                return true;
-            }
-        } else  //3.5秒之内socket还是不可以写入，认为发送失败
-        {
-            return false;
-        }
-    }
-}
-
-
-bool Service::SyncRecvData(int s, char *buf, int size_buf, int *len) {
-    struct timeval tv{};
-    tv.tv_sec = 3;
-    tv.tv_usec = 500;
-    fd_set rset;
-    while (true) {
-        FD_ZERO(&rset);
-        FD_SET(s, &rset);
-        if (select(0, &rset, nullptr, nullptr, &tv) > 0)//3.5秒之内可以
-        {
-            int n = recv(s, buf, sizeof(size_buf), 0);
-            if (n > 0) {
-                *len = n;
-                return true;
-            } else {
-                if ((n < 0) && (errno == EAGAIN || errno == EWOULDBLOCK || errno == EINTR)) {
-                    continue;
-                }
-                return false;
-            }
-        } else  //3.5秒之内socket还是不可以写入，认为发送失败
-        {
-            return false;
-        }
-    }
-}
-
-
-void Service::handleMaster(Event *ev) {
-    char buff[MAXLINE] = {0};
-    int len;
-    if (Service::SyncRecvData(ev->fd, buff, MAXLINE, &len)) {
-        if (len < 4) {
-            std::cout << "master send data to slave err" << std::endl;
-            exit(-1);
-        }
-        int content_len = 0;
-        if (len > 4) {
-            content_len = byteCharToInt(buff);
-        }
-        char *p = buff + 4;
-        if (static_cast<int>(strlen(p)) != content_len) {
-            std::cout << "[ERROR]>> recv data length not match" << std::endl;
-            ev->RemoveAndClose();
-            return;
-        }
-
-        rapidjson::Document *doc = new rapidjson::Document;
-        if (doc->Parse(p).HasParseError()) {
-            std::cout << "[ERROR]>> slave parse master send data err" << std::endl;
-            SyncSendData(master_fd, "OK", 2);
-            return;
-        } else {
-            if(doc->HasMember("ServiceInfo")
-            && doc->HasMember("SlavesInfo")){
-                const rapidjson::Value &serverInfo = (*doc)["ServiceInfo"].GetArray();
-                for (int i = 0; i < serverInfo.Size(); ++i) {
-                    auto item = serverInfo[i].GetObject();
-                    if(item.HasMember("ServerName") && item.HasMember("List")){
-                        const std::string server_name = item["ServerName"].GetString();
-                        auto server_list = item["List"].GetArray();
-                        for (int j = 0; j < server_list.Size(); ++j) {
-                            auto info = server_list[j].GetObject();
-                            const std::string ip = info["Ip"].GetString();
-                            int proportion = info["Proportion"].GetInt();
-                            if (server_list_map.count(server_name)) {
-                                std::list<ServerInfo *> *temp = server_list_map[server_name];
-                                temp->push_front(new ServerInfo(ip, proportion));
-                            } else {
-                                auto *templist = new std::list<ServerInfo *>;
-                                templist->push_front(new ServerInfo(ip, proportion));
-                                server_list_map[ip] = templist;
-                            }
-                        }
-                    }
-                }
-
-                const rapidjson::Value &slaveInfo = (*doc)["SlavesInfo"].GetArray();
-                for (int k = 0; k < slaveInfo.Size(); ++k) {
-                    auto s = slaveInfo[k].GetObject();
-                    std::string ip = s["Ip"].GetString();
-                    std::string name = s["Name"].GetString();
-                    int64_t connect_time = s["ConnectTime"].GetInt64();
-                    collect_slave(ip, name, connect_time);
-                }
-
-                SyncSendData(master_fd, "OK", 2);
-            } else if(doc->HasMember("Op")
-            && std::string((*doc)["Op"].GetString()) == "Del"
-            && doc->HasMember("ServiceInfo")){
-
-                SyncSendData(master_fd, "OK", 2);
-            }
-        }
-    } else {
-        std::cout << "master send data to slave err" << std::endl;
-        //选举master
-        //重启
-        exit(-1);
-    }
-}
-
-
-
 
 
 
@@ -520,7 +389,7 @@ void Service::AcceptHttp(Event *e) {
 
 
 void Service::handleHttp(Event *ev) {
-
+    this->http_server->processHttp(ev);
 }
 
 
@@ -588,7 +457,103 @@ void Service::Remove_slave(std::string name, std::string ip) {
 
 
 void Service::SlavePullDataFromMaster(TimeEvent *event) {
+    if(IsSocketClosed(master_fd)){
+        //master宕机
+        delete((int *)event->data[1]);
+        delete[]((char *)event->data[0]);
+        closesocket(master_fd);
+        auto next_master = this->getNextMaster();
+        if(next_master->name == this->config->node_name){ //本机是下一个master
 
+        } else {
+
+        }
+        return;
+    }
+    int len = *(int *)event->data[1];
+    char data[len];
+    strcpy(data, (char *)event->data[0]);
+    if(SyncSendData(master_fd, data, len)){
+        char buff[MAXLINE];
+        int recv_len;
+        if(SyncRecvData(master_fd, buff, MAXLINE, &recv_len)){
+            if(checkData(buff, recv_len)){
+                rapidjson::Document doc;
+                if (doc.Parse(buff + 4).HasParseError()) {
+                    std::cout << "[ERROR]>> slave parse master send data err" << std::endl;
+                    return;
+                }
+                //正确处理数据
+                if(doc.HasMember("ServiceInfo")
+                   && doc.HasMember("SlavesInfo")){
+                    if(!doc["ServiceInfo"].IsArray() && !doc["SlavesInfo"].IsArray()) return;
+                    const rapidjson::Value &serverInfo = doc["ServiceInfo"].GetArray();
+                    for (int i = 0; i < serverInfo.Size(); ++i) {
+                        auto item = serverInfo[i].GetObject();
+                        if(item.HasMember("ServerName") && item.HasMember("List")){
+                            const std::string server_name = item["ServerName"].GetString();
+                            auto server_list = item["List"].GetArray();
+                            for (int j = 0; j < server_list.Size(); ++j) {
+                                auto info = server_list[j].GetObject();
+                                const std::string ip = info["Ip"].GetString();
+                                int proportion = info["Proportion"].GetInt();
+                                if (server_list_map.count(server_name)) {
+                                    std::list<ServerInfo *> *temp = server_list_map[server_name];
+                                    temp->push_front(new ServerInfo(ip, proportion));
+                                } else {
+                                    auto *templist = new std::list<ServerInfo *>;
+                                    templist->push_front(new ServerInfo(ip, proportion));
+                                    server_list_map[ip] = templist;
+                                }
+                            }
+                        }
+                    }
+                    const rapidjson::Value &slaveInfo = doc["SlavesInfo"].GetArray();
+                    for (int k = 0; k < slaveInfo.Size(); ++k) {
+                        auto s = slaveInfo[k].GetObject();
+                        std::string ip = s["Ip"].GetString();
+                        std::string name = s["Name"].GetString();
+                        int64_t connect_time = s["ConnectTime"].GetInt64();
+                        collect_slave(ip, name, connect_time);
+                    }
+                }
+            } else {
+                //master发送的数据错误
+                return;
+            }
+        } else {
+            //接收master数据失败
+            return;
+        }
+    } else {
+        //发送数据到master失败
+        return;
+    }
+
+}
+
+SlaverInfo * Service::getNextMaster() {
+    SlaverInfo *next_slave = new SlaverInfo;
+
+    if(!slavers.empty()){
+        auto temp = slavers.front();
+        next_slave->connect_time = temp.connect_time;
+        next_slave->name = temp.name;
+        next_slave->ip = temp.ip;
+    } else {
+        next_slave->name = this->config->node_name;
+        return next_slave;
+    }
+
+    for(const auto &x : slavers){
+        if(x.connect_time < next_slave->connect_time){
+            next_slave->ip = x.ip;
+            next_slave->name = x.name;
+            next_slave->connect_time = x.connect_time;
+        }
+    }
+
+    return next_slave;
 }
 
 const std::string Service::GetAllServiceInfoAndSlaveInfo() {
@@ -646,6 +611,178 @@ void Service::Remove_slave(int fd) {
         return false;
     });
 }
+
+
+/*
+ * 初始化http模块
+ */
+void Service::initHttpServer() {
+    this->http_server = new HttpServer;
+#ifdef _WIN64
+    http_server->set_static_path("\\resource");
+#else
+    http_server->set_static_path("/resource");
+#endif
+    auto login = std::bind(&Service::HttpLogin, this, std::placeholders::_1, std::placeholders::_2);
+    auto get_all = std::bind(&Service::HttpGetAllServer, this, std::placeholders::_1, std::placeholders::_2);
+    auto del_server = std::bind(&Service::HttpDelServer, this, std::placeholders::_1, std::placeholders::_2);
+    auto add_server = std::bind(&Service::HttpAddServer, this, std::placeholders::_1, std::placeholders::_2);
+    auto change_server = std::bind(&Service::HttpChangeServer, this, std::placeholders::_1, std::placeholders::_2);
+    http_server->H("POST", "/login", login);
+    http_server->H("GET", "/getAll", get_all);
+    http_server->H("DELETE", "/del", del_server);
+    http_server->H("POST", "/add", add_server);
+    http_server->H("POST", "/change", change_server);
+}
+
+
+
+bool Service::HttpAddServer(Request req, Response *resp) {
+    rapidjson::Document doc;
+    if (doc.Parse(req.body.c_str()).HasParseError()) {
+        resp->write(200, "{\"success\":false}");
+        return false;
+    } else if (doc.HasMember("servername") && doc.HasMember("ip") && doc.HasMember("proportion")) {
+        std::string server_name = doc["servername"].GetString();
+        std::string ip = doc["ip"].GetString();
+        int proportion;
+        if(doc["proportion"].IsInt()){
+            proportion = doc["proportion"].GetInt();
+        }else if(doc["proportion"].IsString()){
+            proportion = atoi(doc["proportion"].GetString());
+        }
+
+        if (server_list_map.count(server_name)) {
+            if(!count(*server_list_map[server_name], ip)){
+                server_list_map[server_name]->push_back(new ServerInfo(ip, proportion));
+            }
+        } else {
+            auto li = new std::list<ServerInfo *>;
+            li->push_back(new ServerInfo(ip, proportion));
+            server_list_map[server_name] = li;
+        }
+        resp->write(200, "{\"success\":true}");
+        return true;
+    }
+}
+
+bool Service::HttpDelServer(Request req, Response *resp) {
+    std::string server_name;
+    std::string server_ip;
+    if (req.params.count("server") && req.params.count("ip")) {
+        server_name = req.params["server"];
+        server_ip = req.params["ip"];
+    } else {
+        resp->write(404, "{\"success\":false}");
+        return false;
+    }
+    if (server_list_map.count(server_name)) {
+        server_list_map[server_name]->remove_if([=](ServerInfo* s) {
+            if(s->ip == server_ip){
+                delete s;
+                return true;
+            }
+            return false;
+        });
+    }
+    resp->write(200, "{\"success\":true}");
+    return true;
+}
+
+bool Service::HttpGetAllServer(Request req, Response *resp) {
+    rapidjson::StringBuffer s;
+    rapidjson::Writer<rapidjson::StringBuffer> w(s);
+    w.StartObject();
+    w.Key("data");
+    w.StartArray();
+    for (auto l :server_list_map) {
+        for (auto x : *l.second) {
+            w.StartObject();
+            w.Key("server");
+            w.String(l.first.c_str());
+            w.Key("ip");
+            w.String(x->ip.c_str());
+            w.Key("proportion");
+            w.Int(x->proportion);
+            w.EndObject();
+        }
+    }
+    w.EndArray();
+    w.EndObject();
+
+    std::string json_data = s.GetString();
+    resp->set_header("Content-Type", "application/json");
+    resp->write(200, json_data);
+    return true;
+}
+
+
+bool Service::HttpLogin(Request req, Response *resp) {
+    rapidjson::Document doc;
+    if (doc.Parse(req.body.c_str()).HasParseError()) {
+        resp->write(200, "{\"success\":false}");
+        return false;
+    } else {
+        if (doc.HasMember("username") && doc.HasMember("password")) {
+            std::string pass = doc["username"].GetString();
+            std::string pwd = doc["password"].GetString();
+            if (pass == "root" && pwd == "123456") {
+                resp->write(200, "{\"success\":true}");
+                return true;
+            } else {
+                resp->write(200, "{\"success\":false}");
+                return true;
+            }
+        } else {
+            resp->write(200, "{\"success\":false}");
+            return true;
+        }
+    }
+}
+
+bool Service::HttpChangeServer(Request req, Response *resp) {
+    rapidjson::Document doc;
+    if (doc.Parse(req.body.c_str()).HasParseError()) {
+        resp->write(200, "{\"success\":false}");
+        return false;
+    } else {
+        if (doc.HasMember("newServerName")
+            && doc.HasMember("newIp")
+            && doc.HasMember("newProportion")
+            && doc.HasMember("oldServerName")
+            && doc.HasMember("oldIp")
+            && doc.HasMember("oldProportion")) {
+            std::string newServerName = doc["newServerName"].GetString();
+            std::string newIp = doc["newIp"].GetString();
+            int newProportion;
+            if(doc["newProportion"].IsInt()){
+                newProportion = doc["newProportion"].GetInt();
+            }else if(doc["newProportion"].IsString()){
+                newProportion = atoi(doc["newProportion"].GetString());
+            }
+            int oldProportion;
+            if(doc["oldProportion"].IsInt()){
+                oldProportion = doc["oldProportion"].GetInt();
+            }else if(doc["oldProportion"].IsString()){
+                oldProportion = atoi(doc["oldProportion"].GetString());
+            }
+            std::string oldServerName = doc["oldServerName"].GetString();
+            std::string oldIp = doc["oldIp"].GetString();
+            if(server_list_map.count(oldServerName)){
+                for(ServerInfo *x : *server_list_map[oldServerName]){
+                    if(x->ip == oldIp && x->proportion == oldProportion){
+                        x->ip = newIp;
+                        x->proportion = newProportion;
+                        break;
+                    }
+                }
+            }
+            resp->write(200, "{\"success\":true}");
+            return true;
+        }
+    }
+}
+
 
 
 bool count(std::list<ServiceClientInfo> src, ServiceClientInfo target) {

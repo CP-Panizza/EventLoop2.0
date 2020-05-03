@@ -65,4 +65,8 @@ int setnonblocking(int fd);
 #endif
 
 
+bool SyncSendData(int s,const char *buf,int len);
+
+bool SyncRecvData(int s, char *buf, int size_buf, int *len);
+
 #endif //EL_UTILS_H

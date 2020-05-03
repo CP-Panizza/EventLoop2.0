@@ -122,6 +122,87 @@ EL/fast:
 	$(MAKE) -f CMakeFiles\EL.dir\build.make CMakeFiles/EL.dir/build
 .PHONY : EL/fast
 
+deps/http/HttpServer.obj: deps/http/HttpServer.cpp.obj
+
+.PHONY : deps/http/HttpServer.obj
+
+# target to build an object file
+deps/http/HttpServer.cpp.obj:
+	$(MAKE) -f CMakeFiles\EL.dir\build.make CMakeFiles/EL.dir/deps/http/HttpServer.cpp.obj
+.PHONY : deps/http/HttpServer.cpp.obj
+
+deps/http/HttpServer.i: deps/http/HttpServer.cpp.i
+
+.PHONY : deps/http/HttpServer.i
+
+# target to preprocess a source file
+deps/http/HttpServer.cpp.i:
+	$(MAKE) -f CMakeFiles\EL.dir\build.make CMakeFiles/EL.dir/deps/http/HttpServer.cpp.i
+.PHONY : deps/http/HttpServer.cpp.i
+
+deps/http/HttpServer.s: deps/http/HttpServer.cpp.s
+
+.PHONY : deps/http/HttpServer.s
+
+# target to generate assembly for a file
+deps/http/HttpServer.cpp.s:
+	$(MAKE) -f CMakeFiles\EL.dir\build.make CMakeFiles/EL.dir/deps/http/HttpServer.cpp.s
+.PHONY : deps/http/HttpServer.cpp.s
+
+deps/http/Request.obj: deps/http/Request.cpp.obj
+
+.PHONY : deps/http/Request.obj
+
+# target to build an object file
+deps/http/Request.cpp.obj:
+	$(MAKE) -f CMakeFiles\EL.dir\build.make CMakeFiles/EL.dir/deps/http/Request.cpp.obj
+.PHONY : deps/http/Request.cpp.obj
+
+deps/http/Request.i: deps/http/Request.cpp.i
+
+.PHONY : deps/http/Request.i
+
+# target to preprocess a source file
+deps/http/Request.cpp.i:
+	$(MAKE) -f CMakeFiles\EL.dir\build.make CMakeFiles/EL.dir/deps/http/Request.cpp.i
+.PHONY : deps/http/Request.cpp.i
+
+deps/http/Request.s: deps/http/Request.cpp.s
+
+.PHONY : deps/http/Request.s
+
+# target to generate assembly for a file
+deps/http/Request.cpp.s:
+	$(MAKE) -f CMakeFiles\EL.dir\build.make CMakeFiles/EL.dir/deps/http/Request.cpp.s
+.PHONY : deps/http/Request.cpp.s
+
+deps/http/Response.obj: deps/http/Response.cpp.obj
+
+.PHONY : deps/http/Response.obj
+
+# target to build an object file
+deps/http/Response.cpp.obj:
+	$(MAKE) -f CMakeFiles\EL.dir\build.make CMakeFiles/EL.dir/deps/http/Response.cpp.obj
+.PHONY : deps/http/Response.cpp.obj
+
+deps/http/Response.i: deps/http/Response.cpp.i
+
+.PHONY : deps/http/Response.i
+
+# target to preprocess a source file
+deps/http/Response.cpp.i:
+	$(MAKE) -f CMakeFiles\EL.dir\build.make CMakeFiles/EL.dir/deps/http/Response.cpp.i
+.PHONY : deps/http/Response.cpp.i
+
+deps/http/Response.s: deps/http/Response.cpp.s
+
+.PHONY : deps/http/Response.s
+
+# target to generate assembly for a file
+deps/http/Response.cpp.s:
+	$(MAKE) -f CMakeFiles\EL.dir\build.make CMakeFiles/EL.dir/deps/http/Response.cpp.s
+.PHONY : deps/http/Response.cpp.s
+
 src/Service/Service.obj: src/Service/Service.cpp.obj
 
 .PHONY : src/Service/Service.obj
@@ -212,6 +293,15 @@ help:
 	@echo ... EL
 	@echo ... edit_cache
 	@echo ... rebuild_cache
+	@echo ... deps/http/HttpServer.obj
+	@echo ... deps/http/HttpServer.i
+	@echo ... deps/http/HttpServer.s
+	@echo ... deps/http/Request.obj
+	@echo ... deps/http/Request.i
+	@echo ... deps/http/Request.s
+	@echo ... deps/http/Response.obj
+	@echo ... deps/http/Response.i
+	@echo ... deps/http/Response.s
 	@echo ... src/Service/Service.obj
 	@echo ... src/Service/Service.i
 	@echo ... src/Service/Service.s
